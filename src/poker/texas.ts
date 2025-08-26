@@ -1,6 +1,6 @@
 import { Card, Player, TableState, Suit, Rank } from "./types";
 
-// Utility: crea mazzo 52 carte
+// Crea mazzo 52 carte
 export function createDeck(): Card[] {
   const suits: Suit[] = ["♠", "♥", "♦", "♣"];
   const ranks: Rank[] = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
@@ -13,7 +13,7 @@ export function createDeck(): Card[] {
   return deck;
 }
 
-// Utility: mescola il mazzo
+// Mescola il mazzo
 export function shuffle(deck: Card[]): Card[] {
   const d = deck.slice();
   for (let i = d.length - 1; i > 0; i--) {
@@ -67,7 +67,7 @@ export function newTableState(tableId: string, playerNames: string[]): TableStat
   };
 }
 
-// Logica semplificata per avanzare le fasi (solo call/check/fold demo)
+// Avanza le fasi (solo call/check/fold demo)
 export function nextPhase(state: TableState): TableState {
   // Flop
   if (state.phase === "preflop") {
@@ -89,16 +89,13 @@ export function nextPhase(state: TableState): TableState {
   return state;
 }
 
-// Valutazione mani Texas Hold'em (semplificata: solo coppia, tris, scala, colore, poker, full, doppia, niente)
+// Valutazione mani Texas Hold'em (semplificata)
 export function evaluateHand(hand: Card[], community: Card[]): string {
-  // Unisci le carte
   const all = [...hand, ...community];
-  // Frequenza rank
   const ranks = all.map(c => c.rank);
   const rankCounts: Record<string, number> = {};
   ranks.forEach(r => { rankCounts[r] = (rankCounts[r] || 0) + 1; });
 
-  // Frequenza suit
   const suits = all.map(c => c.suit);
   const suitCounts: Record<string, number> = {};
   suits.forEach(s => { suitCounts[s] = (suitCounts[s] || 0) + 1; });
@@ -125,7 +122,6 @@ export function evaluateHand(hand: Card[], community: Card[]): string {
   // Coppia
   if (Object.values(rankCounts).includes(2)) return "Coppia!";
 
-  // Niente
   return "Carta alta";
 }
 
